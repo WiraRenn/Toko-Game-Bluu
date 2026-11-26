@@ -4,22 +4,32 @@
 
 from data import games, users, koleksi, wishlist
 import data
-from validasi import input_teks, input_angka, konfirmasi, clear_terminal
+from validasi import input_teks, input_angka, konfirmasi, clear_terminal, pilih_opsi, HIJAU, MERAH, KUNING, CYAN, TEBAL
+from prettytable import PrettyTable
 
 
 def tampilkan_game():
-    """Prosedur untuk menampilkan seluruh katalog game."""
-    print("\n========== DAFTAR GAME ==========")
+    """Prosedur untuk menampilkan seluruh katalog game dalam tabel."""
+    clear_terminal()
+    print(CYAN + TEBAL + "\\n========== DAFTAR GAME ==========")
 
     if len(games) == 0:
-        print("Tidak ada game dalam katalog.")
+        print(KUNING + "Tidak ada game dalam katalog.")
     else:
+        tabel = PrettyTable()
+        tabel.field_names = ["ID", "Nama Game", "Genre", "Stok"]
+        tabel.align["Nama Game"] = "l"
+        tabel.align["Genre"] = "l"
+
         for game in games:
-            print("--------------------------------")
-            print("ID     :", game["id"])
-            print("Nama   :", game["nama"])
-            print("Genre  :", game["genre"])
-            print("Stok   :", game["stok"])
+            tabel.add_row([
+                game["id"],
+                game["nama"],
+                game["genre"],
+                game["stok"]
+            ])
+
+        print(HIJAU + str(tabel))
 
 
 def cari_game(id_game):
@@ -38,7 +48,7 @@ def tambah_game():
     try:
         nama = input_teks("Nama game: ")
         genre = input_teks("Genre game: ")
-        stok = input_angka("Stok game: ", 0)
+        stok = input_angka("Stok game (maksimal 300): ", 0, 300)
 
         game_baru = {
             "id": data.id_berikutnya,
@@ -50,7 +60,7 @@ def tambah_game():
         games.append(game_baru)
         data.id_berikutnya += 1
 
-        print("Game berhasil ditambahkan.")
+        print(HIJAU + "Game berhasil ditambahkan.")
 
     except ValueError as error:
         print("Data tidak valid:", error)
@@ -66,32 +76,28 @@ def edit_game():
         return
 
     try:
-        id_game = input_angka("Masukkan ID game: ", 1)
+        id_game = pilih_opsi("Pilih game yang ingin diedit:", [
+            {"name": f'{game["id"]} - {game["nama"]}', "value": game["id"]}
+            for game in games
+        ])
         game = cari_game(id_game)
 
         if game is None:
             raise ValueError("ID game tidak ditemukan.")
 
-        print("\nData game:")
-        print("1. Nama")
-        print("2. Genre")
-        print("3. Stok")
+        pilihan = pilih_opsi("Pilih data yang ingin diubah:", ["Nama", "Genre", "Stok"])
 
-        pilihan = input_angka("Pilih data yang diubah: ", 1)
-
-        if pilihan == 1:
+        if pilihan == "Nama":
             game["nama"] = input_teks("Nama baru: ")
-        elif pilihan == 2:
+        elif pilihan == "Genre":
             game["genre"] = input_teks("Genre baru: ")
-        elif pilihan == 3:
+        elif pilihan == "Stok":
             game["stok"] = input_angka("Stok baru: ", 0)
-        else:
-            raise ValueError("Pilihan perubahan tidak tersedia.")
 
-        print("Data game berhasil diperbarui.")
+        print(HIJAU + "Data game berhasil diperbarui.")
 
     except ValueError as error:
-        print("Kesalahan:", error)
+        print(MERAH + "Kesalahan:", error)
 
 
 def hapus_game():
@@ -104,7 +110,10 @@ def hapus_game():
         return
 
     try:
-        id_game = input_angka("Masukkan ID game yang dihapus: ", 1)
+        id_game = pilih_opsi("Pilih game yang ingin dihapus:", [
+            {"name": f'{game["id"]} - {game["nama"]}', "value": game["id"]}
+            for game in games
+        ])
         game = cari_game(id_game)
 
         if game is None:
@@ -126,38 +135,32 @@ def hapus_game():
             for username in wishlist:
                 wishlist[username].discard(id_game)
 
-            print("Game berhasil dihapus dari katalog.")
-            print("Jika game sudah dibeli user, game tetap ada di koleksi user.")
+            print(HIJAU + "Game berhasil dihapus dari katalog.")
+            print(CYAN + "Jika game sudah dibeli user, game tetap ada di koleksi user.")
         else:
             print("Penghapusan dibatalkan.")
 
     except ValueError as error:
-        print("Kesalahan:", error)
+        print(MERAH + "Kesalahan:", error)
 
 
 def menu_admin():
     """Prosedur menu Admin."""
     clear_terminal()
     while True:
-        print("\n========== MENU ADMIN ==========")
-        print("1. Tambah Game")
-        print("2. Lihat Daftar Game")
-        print("3. Edit Game")
-        print("4. Hapus Game")
-        print("5. Logout")
+        print(CYAN + TEBAL + "\n========== MENU ADMIN ==========")
+        pilihan = pilih_opsi("Pilih menu Admin:", [
+            "Tambah Game", "Lihat Daftar Game", "Edit Game", "Hapus Game", "Logout"
+        ])
 
-        pilihan = input_angka("Pilih menu: ")
-
-        if pilihan == 1:
+        if pilihan == "Tambah Game":
             tambah_game()
-        elif pilihan == 2:
+        elif pilihan == "Lihat Daftar Game":
             tampilkan_game()
-        elif pilihan == 3:
+        elif pilihan == "Edit Game":
             edit_game()
-        elif pilihan == 4:
+        elif pilihan == "Hapus Game":
             hapus_game()
-        elif pilihan == 5:
+        elif pilihan == "Logout":
             print("Admin berhasil logout.")
             break
-        else:
-            print("Pilihan tidak valid.")
