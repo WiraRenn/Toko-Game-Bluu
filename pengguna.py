@@ -1,17 +1,12 @@
-# ==========================================
-# MODUL FITUR USER
-# ==========================================
-
 from data import games, users, koleksi, wishlist, game_terhapus
 from admin import cari_game
-from validasi import input_teks, input_angka, konfirmasi, clear_terminal, pilih_opsi, HIJAU, MERAH, KUNING, CYAN, TEBAL
+from validasi import input_teks, input_angka, konfirmasi, clear_terminal, pilih_opsi, HIJAU, MERAH, KUNING, CYAN, TEBAL, tampilkan_header
 from prettytable import PrettyTable
 
-
 def lihat_katalog():
-    """Menampilkan katalog dan detail game yang dipilih."""
+    # Menampilkan katalog dan detail game yang dipilih.
     clear_terminal()
-    print(CYAN + TEBAL + "\n========== KATALOG GAME ==========")
+    tampilkan_header("KATALOG GAME", "Pilih game dan lihat informasi lengkap")
 
     if len(games) == 0:
         print("Belum ada game tersedia.")
@@ -23,6 +18,7 @@ def lihat_katalog():
         print("Nama   :", game["nama"])
         print("Genre  :", game["genre"])
         print("Stok   :", game["stok"])
+        print("--------------------------------")
 
     try:
         pilihan_game = pilih_opsi("Pilih game untuk melihat detail:", [
@@ -46,11 +42,10 @@ def lihat_katalog():
     except ValueError as error:
         print(MERAH + "Kesalahan:", error)
 
-
 def lihat_koleksi(username):
-    """Menampilkan seluruh game yang dimiliki user."""
+    # Menampilkan seluruh game yang dimiliki user.
     clear_terminal()
-    print(CYAN + TEBAL + "\n========== KOLEKSI GAME ==========")
+    tampilkan_header("KOLEKSI GAME", "Game yang sudah kamu miliki")
 
     if len(koleksi[username]) == 0:
         print(KUNING + "Koleksi masih kosong.")
@@ -74,11 +69,10 @@ def lihat_koleksi(username):
 
         print(HIJAU + str(tabel))
 
-
 def beli_game(username):
-    """Memproses pembelian game dan mengurangi stok katalog."""
+    # Memproses pembelian game dan mengurangi stok katalog.
     clear_terminal()
-    print(CYAN + TEBAL + "\n========== PEMBELIAN GAME ==========")
+    tampilkan_header("PEMBELIAN GAME", "Pilih game untuk ditambahkan ke koleksi")
 
     if len(games) == 0:
         print("Belum ada game yang tersedia.")
@@ -125,11 +119,10 @@ def beli_game(username):
     except ValueError as error:
         print(MERAH + "Kesalahan:", error)
 
-
 def edit_profil(username):
-    """Mengubah nama, username, atau password akun User."""
+    # Mengubah nama, username, atau password akun User.
     clear_terminal()
-    print("\n========== EDIT PROFIL ==========")
+    tampilkan_header("EDIT PROFIL", "Perbarui informasi akunmu")
 
     akun = users[username]
     print("Nama     :", akun["nama"])
@@ -148,7 +141,6 @@ def edit_profil(username):
             if username_baru in users:
                 raise ValueError("Username sudah digunakan.")
 
-            # Memindahkan data akun ke key username yang baru.
             users[username_baru] = akun
             users[username_baru]["username"] = username_baru
             del users[username]
@@ -171,12 +163,12 @@ def edit_profil(username):
 
     return username
 
-
 def menu_user(username):
-    """Prosedur menu utama User."""
+    # Prosedur menu utama User.
     clear_terminal()
     while True:
-        print("\n========== MENU USER ==========")
+        tampilkan_header("MENU PENGGUNA", f"Selamat datang, {users[username]['nama']}")
+        print(CYAN + f"  Koleksi: {len(koleksi[username])} game   |   Wishlist: {len(wishlist[username])} game")
         pilihan = pilih_opsi("Pilih menu User:", [
             "Lihat Katalog Game", "Beli Game", "Lihat Koleksi Game",
             "Edit Profil", "Wishlist", "Logout"
@@ -196,12 +188,11 @@ def menu_user(username):
             print("User berhasil logout.")
             break
 
-
 def menu_wishlist(username):
-    """Prosedur menu Wishlist."""
+    # Prosedur menu Wishlist.
     clear_terminal()
     while True:
-        print("\n========== MENU WISHLIST ==========")
+        tampilkan_header("MENU WISHLIST", "Simpan game yang ingin kamu mainkan")
         pilihan = pilih_opsi("Pilih menu Wishlist:", [
             "Lihat Wishlist", "Tambah Wishlist", "Hapus Wishlist", "Kembali"
         ])
@@ -215,11 +206,10 @@ def menu_wishlist(username):
         elif pilihan == "Kembali":
             break
 
-
 def lihat_wishlist(username):
-    """Menampilkan seluruh game yang ada di wishlist."""
+    # Menampilkan seluruh game yang ada di wishlist.
     clear_terminal()
-    print("\n========== DAFTAR WISHLIST ==========")
+    tampilkan_header("DAFTAR WISHLIST", "Game pilihanmu")
 
     if len(wishlist[username]) == 0:
         print(KUNING + "Wishlist masih kosong.")
@@ -236,11 +226,10 @@ def lihat_wishlist(username):
 
         print(HIJAU + str(tabel))
 
-
 def tambah_wishlist(username):
-    """Menambahkan game yang tersedia ke wishlist."""
+    # Menambahkan game yang tersedia ke wishlist.
     clear_terminal()
-    print("\n========== TAMBAH WISHLIST ==========")
+    tampilkan_header("TAMBAH WISHLIST", "Tambahkan game ke daftar keinginan")
 
     if len(games) == 0:
         print("Belum ada game dalam katalog.")
@@ -268,11 +257,10 @@ def tambah_wishlist(username):
     except ValueError as error:
         print(MERAH + "Kesalahan:", error)
 
-
 def hapus_wishlist(username):
-    """Menghapus game dari wishlist."""
+    # Menghapus game dari wishlist.
     clear_terminal()
-    print("\n========== HAPUS WISHLIST ==========")
+    tampilkan_header("HAPUS WISHLIST", "Hapus game dari daftar keinginan")
 
     if len(wishlist[username]) == 0:
         print(KUNING + "Wishlist masih kosong.")

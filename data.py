@@ -1,23 +1,11 @@
-# ==========================================
-# DATA PROGRAM SISTEM TOKO GAME
-# ==========================================
-
-# Data akun disimpan dalam dictionary.
-# Akun Admin awal:
-# Username : admin
-# Password : admin123
-
 users = {
-    "admin": {
-        "username": "admin",
-        "password": "admin123",
+    "Renn": {
+        "username": "admin W",
+        "password": "kelompokc2",
         "hak_akses": "Admin",
         "nama": "Administrator"
     }
 }
-
-# Katalog game disimpan dalam list yang berisi dictionary.
-# Data game hanya menggunakan ID, nama, genre, dan stok.
 games = [
     {
         "id": 1,
@@ -51,22 +39,13 @@ games = [
     }
 ]
 
-
-# Data game yang dihapus dari katalog tetapi masih dimiliki user.
-# Data ini digunakan agar game yang sudah dibeli tetap muncul di koleksi.
 game_terhapus = {}
 
-# Koleksi setiap user disimpan dalam dictionary.
-# Isi koleksi berupa list ID game.
 koleksi = {
     "admin": []
 }
 
-# Wishlist setiap user disimpan dalam dictionary.
-# Isi wishlist berupa set ID game agar tidak ada data duplikat.
 wishlist = {
     "admin": set()
 }
-
-# ID game berikutnya.
 id_berikutnya = 6

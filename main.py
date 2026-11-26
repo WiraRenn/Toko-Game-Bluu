@@ -1,23 +1,17 @@
-# ==========================================
-# PROGRAM UTAMA SISTEM TOKO GAME
-# Jalankan file ini untuk memulai program.
-# ==========================================
-
 from autentikasi import login, register
 from admin import menu_admin
 from pengguna import menu_user
-from validasi import clear_terminal, pilih_opsi
-
+from data import games, users
+from validasi import clear_terminal, pilih_opsi, tampilkan_header, CYAN, TEBAL
 
 def menu_utama():
-    """Prosedur untuk menampilkan menu awal program."""
+    # Prosedur untuk menampilkan menu awal program.
     clear_terminal()
     while True:
-        print("\n================================")
-        print("       SISTEM TOKO GAME")
-        print("================================")
-
-        pilihan = pilih_opsi("Pilih menu:", ["Login", "Register", "Keluar"])
+        tampilkan_header("SISTEM TOKO GAME", "Temukan dan kelola koleksi game favoritmu")
+        print(CYAN + f"  Katalog: {len(games)} game tersedia   |   Akun terdaftar: {len(users)}")
+        print()
+        pilihan = pilih_opsi("Apa yang ingin kamu lakukan?", ["Login", "Register", "Keluar"])
 
         if pilihan == "Login":
             akun = login()
@@ -35,11 +29,9 @@ def menu_utama():
             print("Terima kasih telah menggunakan Sistem Toko Game.")
             break
 
-
-
 if __name__ == "__main__":
     try:
         menu_utama()
     except KeyboardInterrupt:
-        print("\n\nProgram dihentikan oleh pengguna (Ctrl+C).")
+        print("\nProgram dihentikan oleh pengguna.")
         print("Terima kasih telah menggunakan Sistem Toko Game.")

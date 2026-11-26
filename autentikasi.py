@@ -1,15 +1,10 @@
-# ==========================================
-# MODUL AUTENTIKASI
-# ==========================================
-
 from data import users, koleksi, wishlist
-from validasi import input_teks, clear_terminal
-
+from validasi import input_teks, clear_terminal, tampilkan_header, CYAN, TEBAL
 
 def register():
-    """Mendaftarkan akun baru dengan hak akses User."""
+    # Mendaftarkan akun baru dengan hak akses User.
     clear_terminal()
-    print("\n========== REGISTER ==========")
+    tampilkan_header("REGISTRASI AKUN", "Buat akun pengguna baru")
 
     while True:
         username = input_teks("Buat username: ")
@@ -38,11 +33,10 @@ def register():
         except ValueError as error:
             print("Kesalahan:", error)
 
-
 def login():
-    """Memeriksa username dan password, maksimal 3 percobaan password."""
+    # Memeriksa username dan password, maksimal 3 percobaan password.
     clear_terminal()
-    print("\n========== LOGIN ==========")
+    tampilkan_header("LOGIN", "Masuk ke Sistem Toko Game")
 
     username = input_teks("Username: ")
 

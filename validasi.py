@@ -1,12 +1,7 @@
-# ==========================================
-# MODUL VALIDASI INPUT
-# ==========================================
-
 import os
 from colorama import init, Fore, Style
 from InquirerPy import inquirer
 
-# Mengaktifkan warna terminal dan reset otomatis setelah setiap teks.
 init(autoreset=True)
 
 HIJAU = Fore.GREEN
@@ -17,14 +12,21 @@ BIRU = Fore.BLUE
 TEBAL = Style.BRIGHT
 RESET = Style.RESET_ALL
 
-
-
 def clear_terminal():
-    """Membersihkan terminal sesuai sistem operasi yang digunakan."""
+    # Membersihkan terminal sesuai sistem operasi yang digunakan.
     os.system("cls" if os.name == "nt" else "clear")
 
+def tampilkan_header(judul, keterangan=None):
+    # Menampilkan header terminal dengan desain yang konsisten.
+    lebar = 54
+    print(CYAN + TEBAL + "╔" + "═" * lebar + "╗")
+    print(CYAN + TEBAL + "║" + judul.center(lebar) + "║")
+    if keterangan:
+        print(CYAN + "║" + keterangan.center(lebar) + "║")
+    print(CYAN + TEBAL + "╚" + "═" * lebar + "╝")
+
 def input_teks(pesan):
-    """Meminta input teks yang tidak boleh kosong."""
+    # Meminta input teks yang tidak boleh kosong.
     while True:
         try:
             nilai = input(pesan).strip()
@@ -37,9 +39,8 @@ def input_teks(pesan):
         except ValueError as error:
             print("Kesalahan:", error)
 
-
 def input_angka(pesan, minimum=None, maksimum=None):
-    """Meminta input angka bulat dan memeriksa batas minimum serta maksimum."""
+    # Meminta input angka bulat dan memeriksa batas minimum serta maksimum.
     while True:
         try:
             angka = int(input(pesan))
@@ -61,19 +62,18 @@ def input_angka(pesan, minimum=None, maksimum=None):
             elif maksimum is not None:
                 print("Nilai maksimal:", maksimum)
 
-
 def konfirmasi(pesan):
-    """Meminta konfirmasi Ya atau Tidak menggunakan try-except-finally."""
+    # Meminta konfirmasi Ya atau Tidak menggunakan try-except-finally.
     while True:
         try:
-            jawaban = input(pesan + " (y/n): ").lower().strip()
+            jawaban = input(pesan + " (ya/tidak) : ").lower().strip()
 
-            if jawaban == "y":
+            if jawaban == "ya":
                 return True
-            elif jawaban == "n":
+            elif jawaban == "tidak":
                 return False
             else:
-                raise ValueError("Masukkan hanya y atau n.")
+                raise ValueError("Masukkan hanya ya atau tidak.")
 
         except ValueError as error:
             print("Kesalahan:", error)
@@ -81,9 +81,8 @@ def konfirmasi(pesan):
         finally:
             print("Pemeriksaan konfirmasi selesai.")
 
-
 def pilih_opsi(pesan, pilihan):
-    """Menampilkan pilihan interaktif menggunakan InquirerPy."""
+    # Menampilkan pilihan interaktif menggunakan InquirerPy.
     return inquirer.select(
         message=pesan,
         choices=pilihan,

@@ -1,17 +1,12 @@
-# ==========================================
-# MODUL FITUR ADMIN
-# ==========================================
-
 from data import games, users, koleksi, wishlist
 import data
-from validasi import input_teks, input_angka, konfirmasi, clear_terminal, pilih_opsi, HIJAU, MERAH, KUNING, CYAN, TEBAL
+from validasi import input_teks, input_angka, konfirmasi, clear_terminal, pilih_opsi, HIJAU, MERAH, KUNING, CYAN, TEBAL, tampilkan_header
 from prettytable import PrettyTable
 
-
 def tampilkan_game():
-    """Prosedur untuk menampilkan seluruh katalog game dalam tabel."""
+    # Prosedur untuk menampilkan seluruh katalog game dalam tabel.
     clear_terminal()
-    print(CYAN + TEBAL + "\\n========== DAFTAR GAME ==========")
+    print(CYAN + TEBAL + "========== DAFTAR GAME ==========")
 
     if len(games) == 0:
         print(KUNING + "Tidak ada game dalam katalog.")
@@ -31,19 +26,17 @@ def tampilkan_game():
 
         print(HIJAU + str(tabel))
 
-
 def cari_game(id_game):
-    """Fungsi dengan parameter untuk mencari game berdasarkan ID."""
+    # Fungsi dengan parameter untuk mencari game berdasarkan ID.
     for game in games:
         if game["id"] == id_game:
             return game
     return None
 
-
 def tambah_game():
-    """Menambahkan game baru ke katalog."""
+    # Menambahkan game baru ke katalog.
     clear_terminal()
-    print("\n========== TAMBAH GAME ==========")
+    tampilkan_header("TAMBAH GAME", "Masukkan data game baru")
 
     try:
         nama = input_teks("Nama game: ")
@@ -56,7 +49,6 @@ def tambah_game():
             "genre": genre,
             "stok": stok
         }
-
         games.append(game_baru)
         data.id_berikutnya += 1
 
@@ -65,11 +57,10 @@ def tambah_game():
     except ValueError as error:
         print("Data tidak valid:", error)
 
-
 def edit_game():
-    """Mengubah nama, genre, atau stok game."""
+    # Mengubah nama, genre, atau stok game.
     clear_terminal()
-    print("\n========== EDIT GAME ==========")
+    tampilkan_header("EDIT GAME", "Perbarui informasi katalog")
     tampilkan_game()
 
     if len(games) == 0:
@@ -92,18 +83,17 @@ def edit_game():
         elif pilihan == "Genre":
             game["genre"] = input_teks("Genre baru: ")
         elif pilihan == "Stok":
-            game["stok"] = input_angka("Stok baru: ", 0)
+            game["stok"] = input_angka("Stok baru (maksimal 300): ", 0, 300)
 
         print(HIJAU + "Data game berhasil diperbarui.")
 
     except ValueError as error:
         print(MERAH + "Kesalahan:", error)
 
-
 def hapus_game():
-    """Menghapus game dari katalog setelah mendapat konfirmasi."""
+    # Menghapus game dari katalog setelah mendapat konfirmasi.
     clear_terminal()
-    print("\n========== HAPUS GAME ==========")
+    tampilkan_header("HAPUS GAME", "Hapus game dari katalog")
     tampilkan_game()
 
     if len(games) == 0:
@@ -143,12 +133,11 @@ def hapus_game():
     except ValueError as error:
         print(MERAH + "Kesalahan:", error)
 
-
 def menu_admin():
-    """Prosedur menu Admin."""
+    # Prosedur menu Admin.
     clear_terminal()
     while True:
-        print(CYAN + TEBAL + "\n========== MENU ADMIN ==========")
+        tampilkan_header("MENU ADMIN", f"Total game dalam katalog: {len(games)}")
         pilihan = pilih_opsi("Pilih menu Admin:", [
             "Tambah Game", "Lihat Daftar Game", "Edit Game", "Hapus Game", "Logout"
         ])
