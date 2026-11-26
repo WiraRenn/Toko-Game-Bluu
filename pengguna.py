@@ -12,13 +12,21 @@ def lihat_katalog():
         print("Belum ada game tersedia.")
         return
 
+    tabel = PrettyTable()
+    tabel.field_names = ["ID", "Nama Game", "Genre", "Stok"]
+
+    tabel.align["Nama Game"] = "l"
+    tabel.align["Genre"] = "l"
+
     for game in games:
-        print("--------------------------------")
-        print("ID     :", game["id"])
-        print("Nama   :", game["nama"])
-        print("Genre  :", game["genre"])
-        print("Stok   :", game["stok"])
-        print("--------------------------------")
+        tabel.add_row([
+            game["id"],
+            game["nama"],
+            game["genre"],
+            game["stok"]
+    ])
+
+    print(HIJAU + str(tabel))
 
     try:
         pilihan_game = pilih_opsi("Pilih game untuk melihat detail:", [
